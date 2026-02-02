@@ -1,0 +1,3 @@
+[submodule "gizmo-public"]
+	path = gizmo-public
+	url = https://github.com/cmhainje/gizmo-public.git
