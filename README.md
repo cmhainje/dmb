@@ -6,7 +6,7 @@ The method is implemented in a fork of [GIZMO](https://github.com/pfhopkins/gizm
 This repository contains
 
 - A Docker+VS Code-based environment for GIZMO development
-- Scripts for creating and analyzing the implementation in a highly-idealized system
+- Scripts for making, running, and analyzing test problems
 - Scripts for running and analyzing simulations of an isolated disk galaxy
 
 
