@@ -1,0 +1,59 @@
+%----  Relevant files
+InitCondFile                       /scratch/ch4407/dmb/agora/ic
+ICFormat                           3
+OutputDir                          {{ directory }}/output
+
+%---- Characteristics of run
+OutputListOn            0
+TimeLimitCPU            691200  % 8 days in seconds
+TimeOfFirstSnapshot     0.00
+TimeBegin               0.00
+TimeMax                 1.00
+TimeBetSnapshot         0.01
+
+RandomSeed 0
+
+BoxSize                     0
+MaxMemSize                  2500
+BufferSize                  100
+PartAllocFactor             5
+MaxSizeTimestep             0.005   % in code units, set for your problem
+TreeDomainUpdateFrequency   0.005	% 0.0005-0.05, dept on core+particle number
+ComovingIntegrationOn       0
+
+%---- System of units
+UnitLength_in_cm            3.085678e21     % 1.0 kpc/h
+UnitMass_in_g               1.989e43  	    % 1.0e10 solar masses/h
+UnitVelocity_in_cm_per_s    1.0e5   	    % 1 km/sec
+
+%---- Initial temperature & temperature floor
+MinGasTemp         10.
+InitGasTemp        1.0e4
+InitMetallicity    0.02041
+InitStellarAge     100.0
+
+%---- Dark matter-baryon interactions
+DMB_InteractionCrossSection  {{ dmb_sigma }}   % cm^2
+DMB_DarkMatterMass           3.345e-24         % g
+DMB_InteractionPowerScale    0
+
+%---- Density/volume estimation (kernel)
+DesNumNgb               32
+AGS_DesNumNgb           32
+
+%---- Gravitational softening lengths
+SofteningGas     0.224
+SofteningHalo    0.224
+SofteningDisk    0.224
+SofteningBulge   0.224
+SofteningStars   0.224
+SofteningBndry   0.224
+
+MinGasHsmlFractional  0.0714
+
+%---- Star Formation parameters (GALSF on)
+CritPhysDensity     10.    %  critical physical density for star formation (cm^(-3))
+SfEffPerFreeFall    0.01    %  SFR/(Mgas/tfreefall) for gas which meets SF criteria
+
+%-------------- Grackle UVB file (GRACKLE on)
+GrackleDataFile	   /home/ch4407/grackle/input/CloudyData_UVB=HM2012.h5
