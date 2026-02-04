@@ -41,9 +41,6 @@ docker pull cmhainje/cenv:latest
 and then use it
 
 ```bash
-# build
-docker build --platform linux/arm64,linux/amd64 -t cmhainje/cenv:latest .
-
 # compile
 cd path/to/dmb/gizmo-public
 docker run -v $(pwd):/workspace cmhainje/cenv:latest bash -c 'make clean && make'
@@ -56,31 +53,38 @@ docker run -v $(pwd):/workspace cmhainje/cenv:latest ./GIZMO
 If you want to build it yourself,
 
 ```bash
-docker build --platform linux/arm64,linux/amd64 -t cmhainje/cenv:latest .
+docker build --platform linux/arm64,linux/amd64 -t <tagname>:latest .
 ```
 
 Just be sure to update the tagname in the previous commands if you decide to change it in the build.
 
-### Using Apptainer
+### NYU Torch
 
 I'm working on NYU's Torch cluster, which uses Apptainer for container-related things.
-Apptainer can build an image from Docker, so ...
+The system provides an image which contains the relevant dependencies.
+The dependencies are located at the same paths as in my Docker image, so the Makefiles still work.
+My cheat sheet:
 
 ```bash
-# pull
-apptainer build ~/cenv.sif docker://cmhainje/cenv
-
 # compile
-cd path/to/dmb/gizmo-public
-apptainer run ~/cenv.sif bash -c 'make clean && make'
+cd /path/to/dmb/gizmo-public
+apptainer exec \
+  /share/apps/images/ubuntu-24.04.3.sif \
+  make
 
 # run
-apptainer run ~/cenv.sif bash -c '/path/to/dmb/gizmo-public/GIZMO'
+apptainer exec \
+  /share/apps/images/ubuntu-24.04.3.sif \
+  /path/to/GIZMO \
+  /path/to/params/gizmo.param
+
+# or using OpenMPI for multiprocessing
+apptainer exec \
+  /share/apps/images/ubuntu-24.04.3.sif \
+  mpiexec -bind-to none -np 16 \
+  /path/to/GIZMO \
+  /path/to/params/gizmo.param
 ```
-
-Note: on Torch, Apptainer automatically mounts the host's file system, so `make` (inside the container) can see the contents of `gizmo-public` (outside the container) by default.
-On other clusters, you may need to set some manual binding (like for Docker above).
-
 
 
 ## License
