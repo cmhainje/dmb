@@ -1,7 +1,14 @@
 [project]
-name = "dmb-redux"
+name = "dmb"
 version = "0.1.0"
-description = "Add your description here"
+description = "dark matter-baryon scattering"
 readme = "README.md"
+authors = [
+    { name = "Connor Hainje", email = "cmhainje@gmail.com" }
+]
 requires-python = ">=3.14"
 dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"
