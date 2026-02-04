@@ -12,5 +12,9 @@
 #SBATCH --error=${directory}/slurm-%x-%j.out
 
 module purge
-srun apptainer exec /home/ch4407/cenv.sif \
-  bash -c "LD_LIBRARY_PATH=/home/ch4407/local/lib:$$LD_LIBRARY_PATH mpirun ${exepath} ${directory}/gizmo.param 1"
+apptainer exec \
+  --env LD_LIBRARY_PATH=/home/ch4407/local/lib:$$LD_LIBRARY_PATH \
+  /share/apps/images/ubuntu-24.04.3.sif \
+  mpiexec -bind-to none -np 16 \
+  ${exepath} \
+  ${directory}/gizmo.param 1
