@@ -1,7 +1,7 @@
 %----  Relevant files
-InitCondFile                       /home/ch4407/dmb/agora/ic
-ICFormat                           3
-OutputDir                          {{ directory }}/output
+InitCondFile    /home/ch4407/dmb/agora/ic
+ICFormat        3
+OutputDir       ${directory}/output
 
 %---- Characteristics of run
 OutputListOn            0
@@ -12,7 +12,7 @@ TimeMax                 1.00
 TimeBetSnapshot         0.01
 TimeBetStatistics       0.01
 
-RandomSeed 0
+RandomSeed              ${random_seed}
 
 BoxSize                     0
 MaxMemSize                  2500
@@ -25,7 +25,7 @@ ComovingIntegrationOn       0
 %---- System of units
 UnitLength_in_cm            3.085678e21     % 1.0 kpc/h
 UnitMass_in_g               1.989e43  	    % 1.0e10 solar masses/h
-UnitVelocity_in_cm_per_s    1.0e5   	    % 1 km/sec
+UnitVelocity_in_cm_per_s    1.0e5   	      % 1 km/sec
 
 %---- Initial temperature & temperature floor
 MinGasTemp         10.
@@ -34,7 +34,7 @@ InitMetallicity    0.02041
 InitStellarAge     100.0
 
 %---- Dark matter-baryon interactions
-DMB_InteractionCrossSection  {{ dmb_sigma }}   % cm^2
+DMB_InteractionCrossSection  ${sigma}   % cm^2
 DMB_DarkMatterMass           3.345e-24         % g
 DMB_InteractionPowerScale    0
 
