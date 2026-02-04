@@ -12,5 +12,5 @@
 #SBATCH --error=${directory}/slurm-%x-%j.out
 
 module purge
-srun apptainer exec /home/ch4407/cenv.sh \
+srun apptainer exec /home/ch4407/cenv.sif \
   bash -c "LD_LIBRARY_PATH=/home/ch4407/local/lib:$$LD_LIBRARY_PATH mpirun ${exepath} ${directory}/gizmo.param 1"
