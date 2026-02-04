@@ -57,7 +57,7 @@ class Sim:
     def render(self, dry_run=False, verbose=False):
         outdir = Path(self.directory)
         if not dry_run:
-            outdir.mkdir(exist_ok=True)
+            outdir.mkdir(parents=True, exist_ok=True)
 
         for filename in TEMPLATES:
             with open(TEMPLATE_DIR / filename, "r") as f:
