@@ -9,7 +9,6 @@ This repository contains
 - Scripts for making, running, and analyzing test problems
 - Scripts for running and analyzing simulations of an isolated disk galaxy
 
-
 ## Authors
 
 - **Connor Hainje**, NYU
@@ -19,7 +18,7 @@ This repository contains
 
 Clone this repo:
 
-```
+```bash
 git clone --recursive https://github.com/cmhainje/dmb.git
 ```
 
@@ -27,7 +26,7 @@ git clone --recursive https://github.com/cmhainje/dmb.git
 
 If you open this project in VS Code, it should automatically detect the Dev Container setup and offer to re-launch the workspace inside a Docker container.
 The Docker container has the necessary dependencies to compile and run GIZMO; I have found this very useful for testing.
-You only need to provide a Config.sh file and run `make`, and all the rest should work! 
+You only need to provide a Config.sh file and run `make`, and all the rest should work!
 
 ### Using Docker
 
@@ -85,7 +84,6 @@ apptainer exec \
   /path/to/GIZMO \
   /path/to/params/gizmo.param
 ```
-
 
 ## License
 
