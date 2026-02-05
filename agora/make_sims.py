@@ -105,6 +105,7 @@ if __name__ == "__main__":
             if args.force:
                 rmtree(sim.directory)
             else:
+                to_dump.append(sim.to_dict())
                 continue
 
         sim.render(verbose=args.verbose)
