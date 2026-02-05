@@ -7,8 +7,18 @@ authors = [
     { name = "Connor Hainje", email = "cmhainje@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "astropy>=7.2.0",
+    "chic",
+    "h5py>=3.15.1",
+    "matplotlib>=3.10.8",
+    "scipy>=1.17.0",
+    "tqdm>=4.67.3",
+]
 
 [build-system]
 requires = ["uv_build>=0.9.18,<0.10.0"]
 build-backend = "uv_build"
+
+[tool.uv.sources]
+chic = { git = "https://github.com/cmhainje/chic" }
