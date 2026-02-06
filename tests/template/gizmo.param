@@ -1,7 +1,7 @@
 %----  Relevant files
-InitCondFile                       ${docker_path}/ic
+InitCondFile                       ${path}/ic
 ICFormat                           3
-OutputDir                          ${docker_path}/output
+OutputDir                          ${path}/output
 
 %---- Characteristics of run
 OutputListOn            0
@@ -11,7 +11,7 @@ TimeBegin               0.0
 TimeMax                 3.0
 TimeBetSnapshot         0.1
 
-RandomSeed 0
+RandomSeed              ${seed}
 
 BoxSize                     10.0
 MaxMemSize                  3000

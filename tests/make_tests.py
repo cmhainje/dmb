@@ -19,8 +19,6 @@ PROTON_MASS_CGS = 1.672622e-24  # [g]
 MEV_IN_G = 1.783e-27  # [g]
 GEV_IN_G = 1.783e-24  # [g]
 
-RNG = np.random.default_rng(seed=0)
-
 
 def make_grid(N: int, box_size: float):
     grid = np.linspace(0, box_size, 2 * N + 1)[1::2]
@@ -28,11 +26,11 @@ def make_grid(N: int, box_size: float):
     return np.stack(list(map(np.ndarray.flatten, [X, Y, Z])), axis=1)
 
 
-def uniform_positions(N: int, box_size: float):
-    return RNG.uniform(0.0, box_size, size=(N**3, 3))
+def uniform_positions(rng: np.random.Generator, N: int, box_size: float):
+    return rng.uniform(0.0, box_size, size=(N**3, 3))
 
 
-def sample_velocities(mean: float, T_over_m: float, N: int):
+def sample_velocities(rng: np.random.Generator, mean: float, T_over_m: float, N: int):
     if T_over_m <= 0:
         return mean * np.ones((N, 3))
 
@@ -42,7 +40,7 @@ def sample_velocities(mean: float, T_over_m: float, N: int):
     sample_temp = T_over_m * np.inf
 
     while (sample_temp - T_over_m) / T_over_m > 0.01:
-        vel = RNG.multivariate_normal(np.zeros(3), cov, size=(N,))
+        vel = rng.multivariate_normal(np.zeros(3), cov, size=(N,))
         vel -= np.mean(vel, 0)
         sample_temp = np.square(vel).sum(1).mean() / 3
 
@@ -66,6 +64,7 @@ class TestSim:
         dens_gas: float = 1e10,
         num_dm: int = 32,
         num_gas: int = 32,
+        seed: int = 0,
     ):
         """
         m_chi:     [g]            mass of the dark matter particle
@@ -94,15 +93,19 @@ class TestSim:
         self.host_path = str(TESTS_DIR / f"{name.replace(" ", "_")}")
         self.docker_path = str(DOCKER_DIR / f"{name.replace(" ", "_")}")
 
+        self.seed = seed
+        self.rng = np.random.default_rng(seed=seed)
+
     def to_dict(self):
         return {
             "host_path": self.host_path,
-            "docker_path": self.docker_path,
+            "path": self.docker_path,
             "m_chi": f"{self.m_chi:.6e}",
             "sigma_0": f"{self.sigma_0 * 1e-27:.6e}",
             "vel_power": f"{self.vel_power:d}",
             "hsml_gas": f"{BOX_SIZE / self.num_gas / 32:.6e}",
             "hsml_dm": f"{BOX_SIZE / self.num_dm / 32:.6e}",
+            "seed": f"{self.seed:d}",
         }
 
     def exists(self):
@@ -122,7 +125,7 @@ class TestSim:
     def make(self):
         # [kpc]
         pos_gas = make_grid(self.num_gas, BOX_SIZE)
-        pos_dm = uniform_positions(self.num_dm, BOX_SIZE)
+        pos_dm = uniform_positions(self.rng, self.num_dm, BOX_SIZE)
 
         # [.]
         ids_gas = np.arange(len(pos_gas))
@@ -137,8 +140,8 @@ class TestSim:
         disp_dm = BOLTZMANN_CGS * self.temp_dm / self.m_chi * 1e-10
 
         # [km/s]
-        vel_gas = sample_velocities(0, 0, len(pos_gas))
-        vel_dm = sample_velocities(self.vel_dm, disp_dm, len(pos_dm))
+        vel_gas = sample_velocities(self.rng, 0, 0, len(pos_gas))
+        vel_dm = sample_velocities(self.rng, self.vel_dm, disp_dm, len(pos_dm))
 
         # [km^2/s^2]
         integy_gas = (1.5 * BOLTZMANN_CGS * self.temp_gas / PROTON_MASS_CGS) * 1e-10
@@ -184,6 +187,15 @@ class TestSim:
 
 test_sims = [
     TestSim("fiducial"),
+    TestSim("fiducial_r1", seed=1),
+    TestSim("fiducial_r2", seed=2),
+    TestSim("fiducial_r3", seed=3),
+    TestSim("fiducial_r4", seed=4),
+    TestSim("fiducial_r5", seed=5),
+    TestSim("fiducial_r6", seed=6),
+    TestSim("fiducial_r7", seed=7),
+    TestSim("fiducial_r8", seed=8),
+    TestSim("fiducial_r9", seed=9),
     TestSim("thermal eq", vel_dm=0),
     TestSim("ram pressure", temp_dm=10, temp_gas=10),
     TestSim("low rho_chi", dens_dm=1e9),
