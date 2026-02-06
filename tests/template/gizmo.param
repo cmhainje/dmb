@@ -1,0 +1,52 @@
+%----  Relevant files
+InitCondFile                       ${docker_path}/ic
+ICFormat                           3
+OutputDir                          ${docker_path}/output
+
+%---- Characteristics of run
+OutputListOn            0
+TimeLimitCPU            691200  % 8 days in seconds
+TimeOfFirstSnapshot     0.0
+TimeBegin               0.0
+TimeMax                 3.0
+TimeBetSnapshot         0.1
+
+RandomSeed 0
+
+BoxSize                     10.0
+MaxMemSize                  3000
+BufferSize                  100
+PartAllocFactor             5
+MaxSizeTimestep             0.005   % in code units, set for your problem
+TreeDomainUpdateFrequency   0.005	% 0.0005-0.05, dept on core+particle number
+ComovingIntegrationOn       0
+
+%---- System of units
+UnitLength_in_cm            3.085678e21     % 1.0 kpc/h
+UnitMass_in_g               1.989e43  	    % 1.0e10 solar masses/h
+UnitVelocity_in_cm_per_s    1.0e5   	      % 1 km/sec
+
+%---- Initial temperature & temperature floor
+MinGasTemp         0.
+InitGasTemp        0.
+InitMetallicity    0.
+InitStellarAge     0.
+
+%---- Dark matter-baryon interactions
+DMB_DarkMatterMass           ${m_chi}
+DMB_InteractionCrossSection  ${sigma_0}
+DMB_InteractionPowerScale    ${vel_power}
+
+%---- Density/volume estimation (kernel)
+DesNumNgb               32
+AGS_DesNumNgb           64
+
+%---- Gravitational softening lengths
+SofteningGas     ${hsml_gas}
+SofteningHalo    ${hsml_dm}
+SofteningDisk    0.0
+SofteningBulge   0.0
+SofteningStars   0.0
+SofteningBndry   0.0
+
+MinGasHsmlFractional  0.0714
